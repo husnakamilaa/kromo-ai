@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Kromo-AI Digital Guardian",
+  "version": "1.0",
+  "description": "Floating chatbot that intervenes when you are about to post negative comments on social media.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "identity"
+  ],
+  "host_permissions": [
+    "*://*.tiktok.com/*",
+    "*://*.instagram.com/*",
+    "https://*.workers.dev/*",
+    "http://localhost:8000/*"
+  ],
+  "oauth2": {
+    "client_id": "1234567890-abcdefg123456.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.profile"
+    ]
+  },
+  "action": {
+    "default_popup": "popup-vite/dist/index.html",
+    "default_title": "Kromo-AI Settings"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.tiktok.com/*",
+        "*://*.instagram.com/*"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

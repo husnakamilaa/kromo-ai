@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  analysisLogs AnalysisLog[]
+
+  @@map("users")
+}
+
+model AnalysisLog {
+  id          String   @id @default(uuid())
+  userId      String?  @map("user_id")
+  user        User?    @relation(fields: [userId], references: [id])
+  platform    String
+  inputText   String   @map("input_text")
+  level       String
+  emotion     String?
+  problem     String?
+  nudge       String?
+  wisdom      String?
+  alternative String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("analysis_logs")
+}
