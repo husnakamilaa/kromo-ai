@@ -18,7 +18,7 @@ function injectUI() {
 
     kromoContainer = document.createElement('div');
     kromoContainer.id = 'kromo-ai-floating-container';
-    
+
     kromoContainer.innerHTML = `
         <div id="kromo-ai-card">
             <div id="kromo-ai-header">
@@ -30,7 +30,7 @@ function injectUI() {
             </div>
         </div>
     `;
-    
+
     document.body.appendChild(kromoContainer);
 
     document.getElementById('kromo-ai-close').addEventListener('click', () => {
@@ -42,11 +42,11 @@ function showUI(data) {
     injectUI();
     const body = document.getElementById('kromo-ai-body');
     const container = document.getElementById('kromo-ai-floating-container');
-    
+
     const levelClass = data.level === 'harmful' ? 'harmful' : 'caution';
     const icon = data.level === 'harmful' ? '🚫' : '⚠️';
     const title = data.level === 'harmful' ? 'Peringatan! Konten Berbahaya' : 'Hati-hati! Perlu Dipertimbangkan';
-    
+
     let html = `
         <div class="kromo-popup-warning ${levelClass} kromo-shake">
             <div class="kromo-header-status ${levelClass}">${icon} ${title}</div>
@@ -73,7 +73,7 @@ function showUI(data) {
 
     html += `</div>`;
     body.innerHTML = html;
-    
+
     container.classList.add('show');
 }
 
@@ -87,19 +87,19 @@ function hideUI() {
 async function analyzeText(text) {
     if (!text || text.trim().length < 3) return;
     if (text === lastAnalyzedText) return;
-    
+
     lastAnalyzedText = text;
 
     // Get API Key and User Name from storage
-    chrome.storage.local.get(['kromo_api_key', 'kromo_user_name'], async function(result) {
+    chrome.storage.local.get(['kromo_api_key', 'kromo_user_name'], async function (result) {
         const apiKey = result.kromo_api_key || "";
         const userName = result.kromo_user_name || null;
-        
+
         try {
             console.log("🌿 Kromo-AI: Analyzing text...", text);
-            // URL Local Backend
-            const WORKER_URL = "http://localhost:8000/api/analyze";
-            
+            // URL Backend (Railway)
+            const WORKER_URL = "https://kromo-ai-production.up.railway.app/api/analyze";
+
             const response = await fetch(WORKER_URL, {
                 method: "POST",
                 headers: {
@@ -139,7 +139,7 @@ function setupInputListener() {
     document.addEventListener('keyup', () => {
         const active = document.activeElement;
         if (!active) return;
-        
+
         let text = "";
         if (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA') {
             text = active.value;

@@ -12,7 +12,7 @@
     "*://*.tiktok.com/*",
     "*://*.instagram.com/*",
     "https://*.workers.dev/*",
-    "http://localhost:8000/*"
+    "https://kromo-ai-production.up.railway.app/*"
   ],
   "oauth2": {
     "client_id": "1234567890-abcdefg123456.apps.googleusercontent.com",
